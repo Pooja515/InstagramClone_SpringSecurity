@@ -11,6 +11,8 @@ import com.insta.instagram.dto.UserDto;
 import com.insta.instagram.exceptions.UserException;
 import com.insta.instagram.modal.User;
 import com.insta.instagram.repository.UserRepository;
+import com.insta.instagram.security.JwtTokenClaims;
+import com.insta.instagram.security.JwtTokenProvider;
 
 
 @Service
@@ -21,6 +23,9 @@ public class UserServiceImplementation implements UserService {
    @Autowired
     private PasswordEncoder passwordEncoder;
 
+   @Autowired
+   private JwtTokenProvider jwtTokenProvider;
+   
 	@Override
 	public User registerUser(User user) throws UserException {
 		Optional<User> isEmailExist = userRepository.findByEmail(user.getEmail());
@@ -64,8 +69,24 @@ Optional<User> isUsernameExist = userRepository.findByUsername(user.getUsername(
 
 	@Override
 	public User findUserProfile(String token) throws UserException {
-		// TODO Auto-generated method stub
-		return null;
+		// Bearer afafdadfasdfasdf
+		token = token.substring(7);
+		
+		JwtTokenClaims jwtTokenClaims = jwtTokenProvider.getClaimsFromToken(token);
+		
+		String email = jwtTokenClaims.getUsername();
+		
+		Optional<User> opt = userRepository.findByEmail(email);
+		
+		if(opt.isPresent()) {
+			return opt.get();
+		}
+		
+		
+		throw new UserException("invalid token");
+		
+		
+	
 	}
 
 	@Override
