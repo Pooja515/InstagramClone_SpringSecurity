@@ -112,4 +112,12 @@ public class CommentServiceImplementation implements CommentService {
 		
 	}
 
+	public PostRepository getPostRepository() {
+		return postRepository;
+	}
+
+	public void setPostRepository(PostRepository postRepository) {
+		this.postRepository = postRepository;
+	}
+
 }

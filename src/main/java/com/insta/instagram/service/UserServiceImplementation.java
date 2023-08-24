@@ -95,11 +95,11 @@ Optional<User> isUsernameExist = userRepository.findByUsername(user.getUsername(
 		
         UserDto following = new UserDto();
 		
-        following.setEmail(follower.getEmail());
-        following.setId(follower.getId());
-        following.setUserImage(follower.getUserImage());
-        following.setName(follower.getName());
-        following.setUsername(follower.getUsername());
+        following.setEmail(followUser.getEmail());
+        following.setId(followUser.getId());
+        following.setUserImage(followUser.getImage());
+        following.setName(followUser.getName());
+        following.setUsername(followUser.getUsername());
         
         reqUser.getFollowing().add(following);
         followUser.getFollower().add(follower);
@@ -113,7 +113,7 @@ Optional<User> isUsernameExist = userRepository.findByUsername(user.getUsername(
 
 	@Override
 	public String unFollowUser(Integer reqUserId, Integer followUserId) throws UserException {
-		// TODO Auto-generated method stub
+		
 		User reqUser = findUserById(reqUserId);
 		User followUser = findUserById(followUserId);
 		
@@ -127,19 +127,19 @@ Optional<User> isUsernameExist = userRepository.findByUsername(user.getUsername(
 		
         UserDto following = new UserDto();
 		
-        following.setEmail(follower.getEmail());
-        following.setId(follower.getId());
-        following.setUserImage(follower.getUserImage());
-        following.setName(follower.getName());
-        following.setUsername(following.getUsername());
+        following.setEmail(followUser.getEmail());
+        following.setId(followUser.getId());
+        following.setUserImage(followUser.getImage());
+        following.setName(followUser.getName());
+        following.setUsername(followUser.getUsername());
         
-        reqUser.getFollowing().remove(following);
+        reqUser.getFollowing().remove(follower);
         followUser.getFollower().remove(follower);
         
         userRepository.save(followUser);
         userRepository.save(reqUser);
         
-		return "you have unfollowed"+follower.getUserImage();
+		return "you have unfollowed"+followUser.getUsername();
 	}
 
 	@Override

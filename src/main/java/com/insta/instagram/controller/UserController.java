@@ -26,7 +26,7 @@ public class UserController {
     @Autowired
 	private UserService userService;
     
-    @GetMapping("id/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<User> findUserByIdHandler(@PathVariable Integer id ) throws UserException {
     User user = userService.findUserById(id);
     
@@ -34,24 +34,44 @@ public class UserController {
     
 }
 
-    @GetMapping("username/{username}")
+    @GetMapping("/username/{username}")
          public ResponseEntity<User> findUserByUsernameHandler(@PathVariable String username ) throws UserException{
                 User user = userService.findUserByUsername(username);
 
                 return new ResponseEntity<User> (user,HttpStatus.OK);
 }
-    @PutMapping("follow/{followUserId}")
-    public ResponseEntity<MessageResponse> followUserByUserHandler(@PathVariable Integer followUserId ) {
-    	return null;
+    @PutMapping("/follow/{followUserId}")
+    public ResponseEntity<MessageResponse> followUserUserHandler(@PathVariable Integer followUserId,@RequestHeader("Authorization") String token ) throws UserException {
+    	User user =userService.findUserProfile(token);
+    	
+    	String message=userService.followUser(user.getId(), followUserId);
+    	
+    	MessageResponse res = new MessageResponse(message);
+    	
+    	
+    	return new ResponseEntity<MessageResponse>(res,HttpStatus.OK);
     }
-    @PutMapping("unfollow/{userId}")
-    public ResponseEntity<MessageResponse> unfollowUserByUserHandler(@PathVariable Integer userId ) {
-    	return null;
+    
+    @PutMapping("/unfollow/{userId}")
+    public ResponseEntity<MessageResponse> unFollowUserHandler(@PathVariable Integer userId ,@RequestHeader("Authorization") String token ) throws UserException {
+       User user =userService.findUserProfile(token);
+    	
+    	String message=userService.unFollowUser(user.getId(), userId);
+    	
+    	MessageResponse res = new MessageResponse(message);
+    	
+    	
+    	return new ResponseEntity<MessageResponse>(res,HttpStatus.OK);
     }
-    @PutMapping("/req")
-    public ResponseEntity<MessageResponse> findUserProfileHandler(@RequestHeader("Authorization") String token) {
-    	return null;
+    
+    @GetMapping("/req")
+    public ResponseEntity<User> findUserProfileHandler(@RequestHeader("Authorization") String token) throws UserException {
+    	
+    	User user =userService.findUserProfile(token);
+    	
+    	return new ResponseEntity<User>(user,HttpStatus.OK);
     }
+    
     @GetMapping("/m/{userIds}")
     public ResponseEntity<List<User>> findUserByUserIdsHandler(@PathVariable List<Integer> userIds ) throws UserException {
            List<User> users = userService.findUserByIds(userIds);
@@ -64,9 +84,15 @@ public class UserController {
            return new ResponseEntity<List<User>> (users,HttpStatus.OK);
     
 }
- 
-    public ResponseEntity<User> updatedUserHandler(@RequestHeader("Authorization") String token, @RequestBody User user) {
-    	return null;
+ @PutMapping("/account/edit")
+    public ResponseEntity<User> updatedUserHandler(@RequestHeader("Authorization") String token, @RequestBody User user) throws UserException {
+      
+	 User reqUser =userService.findUserProfile(token);
+	 
+	 User updatedUser=userService.updateUserDetails(user,reqUser);
+	 
+	 
+	 return  new ResponseEntity<User>(updatedUser,HttpStatus.OK);
     }
     
 }

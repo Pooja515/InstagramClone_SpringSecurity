@@ -37,6 +37,10 @@ public class Comments {
     private Set<UserDto> likedByUsers = new HashSet<>();
 
     private LocalDateTime createAt;
+    
+    public Comments() {
+    	
+    }
 
     public Comments(Integer id, UserDto user, String content, Set<UserDto> likedByUsers, LocalDateTime createAt) {
         this.id = id;

@@ -1,7 +1,5 @@
 package com.insta.instagram.dto;
 
-import java.util.Objects;
-
 public class UserDto {
 
 	private Integer id;

@@ -31,13 +31,8 @@ public class Story {
 
     @NotNull
     private String image;
-
     private String caption;
-
     private LocalDateTime timestamp;
-
-    public Story() {
-    }
 
     public Story(Integer id, UserDto user, String image, String caption, LocalDateTime timestamp) {
         this.id = id;
@@ -47,7 +42,11 @@ public class Story {
         this.timestamp = timestamp;
     }
 
-    public Integer getId() {
+    public Story() {
+		
+	}
+
+	public Integer getId() {
         return id;
     }
 

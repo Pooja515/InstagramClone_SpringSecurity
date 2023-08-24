@@ -15,7 +15,6 @@ import com.insta.instagram.exceptions.CommentException;
 import com.insta.instagram.exceptions.PostException;
 import com.insta.instagram.exceptions.UserException;
 import com.insta.instagram.modal.Comments;
-import com.insta.instagram.modal.Post;
 import com.insta.instagram.modal.User;
 import com.insta.instagram.service.CommentService;
 import com.insta.instagram.service.UserService;
